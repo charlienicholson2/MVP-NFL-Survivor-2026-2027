@@ -137,6 +137,19 @@ window.Survivor = (function () {
     return weeksData.reduce((sum, w) => sum + w.entries.filter((e) => e.result === "Eliminated").length, 0);
   }
 
+  // Picks the week to show as "current." Honors a manual CURRENT_WEEK
+  // override in config so grading results or adding next week's rows
+  // never flips the site on its own — falls back to the highest week
+  // number present in the data if no override is set (or it doesn't
+  // match anything yet).
+  function resolveCurrentWeek(weeksData) {
+    if (cfg.CURRENT_WEEK != null) {
+      const match = weeksData.find((w) => w.week === Number(cfg.CURRENT_WEEK));
+      if (match) return match;
+    }
+    return weeksData[weeksData.length - 1];
+  }
+
   function escapeHTML(str) {
     return String(str)
       .replace(/&/g, "&amp;")
@@ -145,5 +158,5 @@ window.Survivor = (function () {
       .replace(/"/g, "&quot;");
   }
 
-  return { cfg, loadData, parseCSV, rowsToWeeks, normalizeResult, aggregatePicks, dominantResult, usedQBsForName, cumulativeEliminated, escapeHTML };
+  return { cfg, loadData, parseCSV, rowsToWeeks, normalizeResult, aggregatePicks, dominantResult, usedQBsForName, cumulativeEliminated, resolveCurrentWeek, escapeHTML };
 })();
