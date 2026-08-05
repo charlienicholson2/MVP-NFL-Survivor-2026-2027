@@ -78,7 +78,6 @@
         <div class="pick-row">
           <div class="pick-name">
             ${S.escapeHTML(c.qb)}
-            ${c.team ? `<span class="team-tag">${S.escapeHTML(c.team)}</span>` : ""}
             <span class="result-tag ${tagClass}">${res}</span>
           </div>
           <div class="bar-track"><div class="bar-fill" style="width:${c.pct.toFixed(1)}%"></div></div>
