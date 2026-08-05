@@ -29,7 +29,7 @@
       return;
     }
 
-    const latest = weeksData[weeksData.length - 1];
+    const latest = S.resolveCurrentWeek(weeksData);
     renderTopStats(latest, weeksData);
     renderPicksPanel(latest);
   }
