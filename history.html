@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Past Weeks | MVP Survivor Challenge</title>
+  <meta name="description" content="Past weeks of the PrizePicks MVP Survivor Challenge — pick % breakdowns and the survivor ladder." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="wrap">
+      <div class="brand">
+        <img src="assets/logo-on-dark.png" alt="PrizePicks" />
+        <span class="brand-name">MVP Survivor<small>Presented by PrizePicks</small></span>
+      </div>
+      <nav class="site-nav">
+        <a href="index.html#this-week">This Week</a>
+        <a href="index.html#rules">Rules</a>
+        <a href="history.html" class="current">History</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="history-hero">
+    <div class="wrap">
+      <span class="eyebrow"><span class="dot"></span> Season Archive</span>
+      <h1 class="hero-title" style="font-size: clamp(2rem, 4.5vw, 3rem);">Past weeks</h1>
+      <p class="hero-sub">The survivor ladder shows how the field has thinned out. Scroll down for every week's full pick breakdown.</p>
+    </div>
+  </section>
+
+  <section id="ladder-section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Survivor ladder</h2>
+        <p>Green = survived that week, red = eliminated, blue = result pending.</p>
+      </div>
+      <div class="ladder" id="ladder">
+        <p class="state-msg">Loading history…</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="weeks">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Week by week</h2>
+        <p>Most recent week first.</p>
+      </div>
+      <div id="weeks-list">
+        <p class="state-msg">Loading weeks…</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap" style="display:flex; justify-content:space-between; width:100%; flex-wrap:wrap; gap:10px;">
+      <span>PrizePicks MVP Survivor Challenge</span>
+      <span><a href="index.html">&larr; Back to this week</a></span>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="shared.js"></script>
+  <script src="history.js"></script>
+</body>
+</html>

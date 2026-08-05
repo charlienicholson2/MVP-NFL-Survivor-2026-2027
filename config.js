@@ -1,0 +1,32 @@
+/**
+ * SURVIVOR CHALLENGE CONFIG
+ * ---------------------------------------------------------
+ * 1. In Google Sheets: File > Share > Publish to web
+ *    - Select the specific sheet/tab that holds your pick data
+ *    - Choose "Comma-separated values (.csv)"
+ *    - Click Publish, then copy the URL it gives you
+ * 2. Paste that URL below as SHEET_CSV_URL.
+ *
+ * Expected columns in your sheet (exact header names, any order):
+ *   Week        -> e.g. 1, 2, 3...
+ *   Name         -> MVP's name (used only to count entries, never displayed)
+ *   QB Pick      -> e.g. "Josh Allen"
+ *   Team         -> e.g. "BUF" (optional, shown next to the QB name)
+ *   Result       -> "Survived" / "Eliminated" / "Pending" (optional)
+ *
+ * If SHEET_CSV_URL is left blank, the site falls back to the sample
+ * data in data/sample-weeks.json so you can preview the layout.
+ */
+window.SURVIVOR_CONFIG = {
+  SHEET_CSV_URL: "",
+
+  // The combined TD threshold QBs need to hit to survive (passing + rushing + receiving)
+  TD_THRESHOLD: 1.5,
+
+  // Season framing shown in the hero
+  SEASON_LABEL: "2026 Season",
+
+  // Optional: ISO datetime string for when this week's picks lock (kickoff).
+  // Leave blank to hide the countdown.
+  NEXT_LOCK_ISO: "",
+};

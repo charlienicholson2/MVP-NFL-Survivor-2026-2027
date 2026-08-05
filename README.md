@@ -1,0 +1,137 @@
+# MVP Survivor Challenge
+
+A static site for the PrizePicks MVP Survivor Challenge — pick one QB a week to clear 1.5 combined touchdowns (passing + rushing + receiving), never repeat a QB, or you're out. Shows a live pick % breakdown for the current week, plus a scrollable history page with the full survivor ladder. No backend required.
+
+## How it works
+
+- `index.html` — home page: rules + this week's pick breakdown
+- `history.html` — past weeks, scrollable, plus the season-long survivor ladder
+- `shared.js` — data loading + aggregation logic used by both pages
+- `index.js` / `history.js` — page-specific rendering
+- `styles.css` — brand-driven styling
+- `config.js` — the one file you edit weekly (or once, if you go live)
+- `data/sample-weeks.json` — placeholder data so the pages look right before you connect a real sheet
+
+The site pulls pick data straight from a Google Sheet you publish to the web as CSV. No server, no database — GitHub Pages hosts static files and the browser fetches your sheet directly.
+
+**One thing worth knowing:** publishing a tab this way makes that CSV link viewable by anyone who has it, no login required. That's why the setup below splits your data into an internal-only tab (with names) and a separate, name-free tab that's the only thing actually published — see "Keeping member names actually internal" below.
+
+## 1. Set up the Google Sheet
+
+You'll use three tabs: **Picks** (raw Typeform responses, internal only), **Results** (your weekly grading, small and fast to fill in, internal only), and **Published** (a name-free mirror of Picks — this is the only tab that ever goes public).
+
+### Picks tab
+
+| Week | Name | QB Pick | Team | Result |
+|------|------|---------|------|--------|
+| 1 | Jordan T. | Josh Allen | BUF | *(formula)* |
+| 1 | Casey R. | Lamar Jackson | BAL | *(formula)* |
+
+- **Week** — the numeric week (1, 2, 3…)
+- **Name** — MVP's name, pulled from your Typeform responses. Used only to enforce the no-repeat rule (see below) — the site itself never displays names.
+- **QB Pick** — the quarterback they picked
+- **Team** — optional, shown as a small tag next to the QB
+- **Result** — a formula that pulls from the Results tab (see below), so you never type this by hand per-person
+
+Each week, copy that week's Typeform responses in as new rows (don't overwrite past weeks — the site uses history to build the survivor ladder).
+
+### Results tab (this is the only place you manually grade anything)
+
+| Week | QB | Result | Key |
+|------|-----|--------|-----|
+| 1 | Josh Allen | Survived | `=A2&"\|"&B2` |
+| 1 | Lamar Jackson | Survived | `=A3&"\|"&B3` |
+| 1 | C.J. Stroud | Eliminated | `=A4&"\|"&B4` |
+
+After each week's games, you fill in **one row per distinct QB that was picked** (not per person) with `Survived` or `Eliminated`. Column D is a helper key — fill it down as a formula once and it auto-fills for new rows.
+
+### Auto-fill Result on the Picks tab
+
+In the Picks tab's **Result** column (say column E, with Week in A and QB Pick in C):
+
+```
+=IFERROR(INDEX(Results!$C:$C, MATCH(A2&"|"&C2, Results!$D:$D, 0)), "Pending")
+```
+
+This looks up that row's Week + QB combo against your Results tab and pulls the grade automatically. Anything not yet graded shows as "Pending" until you fill in the Results tab.
+
+### Enforcing "no repeat QB"
+
+Add one more helper column on the Picks tab (say column F, "Duplicate?") to flag it for you when entering data:
+
+```
+=IF(COUNTIFS($B$2:B2,B2,$C$2:C2,C2)>1,"⚠ Repeat pick","")
+```
+
+This flags any row where that Name + QB Pick combo has already appeared earlier in the sheet — so if someone rides with a QB they already used, you'll see the warning while copying in that week's responses and can follow up with them before locking things in. This stays on your admin sheet only; the public site still never shows names, so this check happens on your side, not the members'.
+
+### Keeping member names actually internal
+
+You'll want **Picks** and **Results** shared only with your internal team (Google's normal "Share" — restricted to specific people, not published). That's the tab with names on it, and it should never be published.
+
+Add a third tab, **Published**, that mirrors Picks but drops the Name and Duplicate? columns entirely — this is the *only* tab you publish to web, and it's the only one the site ever reads. Give it a header row (`Week | QB Pick | Team | Result`), then in the first data cell:
+
+```
+=QUERY(Picks!A2:E, "select A, C, D, E", 0)
+```
+
+This pulls Week, QB Pick, Team, and Result from Picks — with Name left out entirely — and stays live as you add rows to Picks. Since it never contains a name or any other personal info, the fact that its link is technically public (anyone with the link, no login) doesn't expose anything about your members — it's just pick counts and results, which the site was always going to show anyway.
+
+**Bottom line:** restrict sharing on Picks/Results to your internal team like you'd want to anyway; publish only the derived, name-free Published tab.
+
+### Publish the sheet as CSV
+
+1. In Google Sheets: **File > Share > Publish to web**
+2. Under "Link", choose the **Published** tab specifically (not "Entire Document", and not Picks or Results — those stay internal)
+3. Under format, choose **Comma-separated values (.csv)**
+4. Click **Publish**, confirm, and copy the URL it gives you (looks like `https://docs.google.com/spreadsheets/d/e/.../pub?output=csv`)
+
+Paste that URL into `config.js`:
+
+```js
+window.SURVIVOR_CONFIG = {
+  SHEET_CSV_URL: "https://docs.google.com/spreadsheets/d/e/.../pub?output=csv",
+  ...
+};
+```
+
+## 2. Push this to GitHub
+
+From this folder:
+
+```bash
+git init
+git add .
+git commit -m "MVP Survivor Challenge site"
+git branch -M main
+git remote add origin https://github.com/<your-org>/<your-repo>.git
+git push -u origin main
+```
+
+## 3. Turn on GitHub Pages
+
+1. In your new repo on GitHub: **Settings > Pages**
+2. Under "Build and deployment", set **Source** to `Deploy from a branch`
+3. Set **Branch** to `main` and folder to `/ (root)`
+4. Save — GitHub gives you a URL like `https://<your-org>.github.io/<your-repo>/` within a minute or two
+
+That's your live site. Share that link with your MVPs.
+
+## Weekly workflow once it's live
+
+1. Send the Typeform link to MVPs before kickoff
+2. Once responses are in, copy them into the **Picks** tab as new rows for that week's number, watching for any "⚠ Repeat pick" flags
+3. After games finish, fill in that week's grades on the **Results** tab — one row per distinct QB, not per person
+4. That's it — **Published** updates itself from the QUERY formula, and the site reads it live with no redeploy. Current week shows on the home page; everything before it moves to the History page automatically.
+
+## Customizing
+
+- **TD threshold, season label, lock countdown** — edit the top of `config.js`
+- **Colors, type, layout** — `styles.css` uses PrizePicks brand tokens as CSS variables at the top of the file
+- **Copy/rules text** — edit directly in `index.html` / `history.html`
+
+## Notes
+
+- If `SHEET_CSV_URL` is blank, both pages show the sample data in `data/sample-weeks.json` so you can preview the design before connecting real data.
+- The site never renders individual names or picks — only aggregate percentages and counts, by design. The no-repeat rule is enforced on your admin sheet (via the Duplicate? flag), not by anything public-facing.
+- Want automated grading later instead of the Results tab? That's possible with a scheduled GitHub Action pulling from a stats API (e.g. Sportradar) and writing back to the sheet — more setup and an ongoing API cost/dependency, but zero weekly manual work. Worth it once manual grading becomes a real bottleneck; probably not before then.

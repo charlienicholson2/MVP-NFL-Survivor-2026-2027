@@ -1,0 +1,29 @@
+[
+  {
+    "week": 1,
+    "entries": [
+      { "qb": "Josh Allen", "team": "BUF", "result": "Survived" },
+      { "qb": "Josh Allen", "team": "BUF", "result": "Survived" },
+      { "qb": "Josh Allen", "team": "BUF", "result": "Survived" },
+      { "qb": "Lamar Jackson", "team": "BAL", "result": "Survived" },
+      { "qb": "Lamar Jackson", "team": "BAL", "result": "Survived" },
+      { "qb": "Jalen Hurts", "team": "PHI", "result": "Survived" },
+      { "qb": "Jalen Hurts", "team": "PHI", "result": "Eliminated" },
+      { "qb": "Patrick Mahomes", "team": "KC", "result": "Survived" },
+      { "qb": "C.J. Stroud", "team": "HOU", "result": "Eliminated" },
+      { "qb": "Dak Prescott", "team": "DAL", "result": "Survived" }
+    ]
+  },
+  {
+    "week": 2,
+    "entries": [
+      { "qb": "Josh Allen", "team": "BUF", "result": "Survived" },
+      { "qb": "Josh Allen", "team": "BUF", "result": "Survived" },
+      { "qb": "Lamar Jackson", "team": "BAL", "result": "Survived" },
+      { "qb": "Jalen Hurts", "team": "PHI", "result": "Survived" },
+      { "qb": "Patrick Mahomes", "team": "KC", "result": "Eliminated" },
+      { "qb": "Dak Prescott", "team": "DAL", "result": "Survived" },
+      { "qb": "Jayden Daniels", "team": "WAS", "result": "Survived" }
+    ]
+  }
+]

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MVP Survivor Challenge | PrizePicks</title>
+  <meta name="description" content="The PrizePicks MVP Survivor Challenge — pick one QB to clear 1.5 combined touchdowns every week. Miss, and you're out." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="wrap">
+      <div class="brand">
+        <img src="assets/logo-on-dark.png" alt="PrizePicks" />
+        <span class="brand-name">MVP Survivor<small>Presented by PrizePicks</small></span>
+      </div>
+      <nav class="site-nav">
+        <a href="#this-week">This Week</a>
+        <a href="#rules">Rules</a>
+        <a href="history.html">History</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow"><span class="dot"></span> MVP Exclusive</span>
+      <h1 class="hero-title">One QB. <span class="accent">1.5 TDs.</span> Every week or you're out.</h1>
+      <p class="hero-sub">
+        The Survivor Challenge is simple to say and hard to survive: each week, pick one quarterback
+        you believe scores more than <span data-threshold>1.5</span> combined touchdowns — passing,
+        rushing, or receiving. Clear it and you live to pick again. Miss it and you're done. And once
+        you've ridden with a QB, that QB is off the board for you for the rest of the season.
+      </p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="value" id="current-week-stat">—</span>
+          <span class="label">Current Week</span>
+        </div>
+        <div class="hero-stat">
+          <span class="value" id="remaining-stat">—</span>
+          <span class="label">Still Alive</span>
+        </div>
+        <div class="hero-stat">
+          <span class="value" id="lock-countdown">—</span>
+          <span class="label">Until Picks Lock</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="this-week">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="this-week-heading">This week's pick breakdown</h2>
+        <p>What the MVP base is riding with — aggregate percentages only, never individual picks.</p>
+      </div>
+      <div class="picks-panel" id="picks-panel">
+        <p class="state-msg">Loading picks…</p>
+      </div>
+      <p class="see-history"><a href="history.html">See past weeks &rarr;</a></p>
+    </div>
+  </section>
+
+  <section id="rules">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>How it works</h2>
+        <p>Four rules. No exceptions. Get your pick in before kickoff.</p>
+      </div>
+      <div class="rules-grid">
+        <div class="rule-card" tabindex="0">
+          <div class="step">Step 01</div>
+          <h3>Submit your pick</h3>
+          <p>Fill out the weekly Typeform with the one QB you're riding with before that week's games kick off.</p>
+        </div>
+        <div class="rule-card" tabindex="0">
+          <div class="step">Step 02</div>
+          <h3>Clear the threshold</h3>
+          <p>Your QB needs more than <span data-threshold>1.5</span> combined touchdowns — passing, rushing, and receiving all count toward the total.</p>
+          <span class="threshold-pill">1.5+ combined TDs to survive</span>
+        </div>
+        <div class="rule-card" tabindex="0">
+          <div class="step">Step 03</div>
+          <h3>No repeats</h3>
+          <p>Once you've picked a quarterback, he's used for the rest of the season — you can't ride with the same QB twice.</p>
+        </div>
+        <div class="rule-card" tabindex="0">
+          <div class="step">Step 04</div>
+          <h3>Live to pick again</h3>
+          <p>Clear it and you advance to next week. Miss it and you're eliminated from the challenge for the rest of the season.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap" style="display:flex; justify-content:space-between; width:100%; flex-wrap:wrap; gap:10px;">
+      <span>PrizePicks MVP Survivor Challenge</span>
+      <span>Picks are private — only aggregate results are shown.</span>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="shared.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>
