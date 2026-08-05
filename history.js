@@ -26,12 +26,25 @@
   }
 
   function renderLadder(weeksData) {
+    const cfg = S.cfg;
+    let cumulativeEliminated = 0;
+
     const rows = weeksData.map((w) => {
       const total = w.entries.length || 1;
       const survived = w.entries.filter((e) => e.result === "Survived").length;
       const eliminated = w.entries.filter((e) => e.result === "Eliminated").length;
       const pending = total - survived - eliminated;
       const pct = (n) => (n / total) * 100;
+
+      let countLabel;
+      if (cfg.TOTAL_MVPS) {
+        cumulativeEliminated += eliminated;
+        const alive = cfg.TOTAL_MVPS - cumulativeEliminated;
+        countLabel = `<strong>${alive}</strong> / ${cfg.TOTAL_MVPS} alive`;
+      } else {
+        countLabel = `<strong>${survived + pending}</strong> / ${total} alive`;
+      }
+
       return `
         <div class="ladder-rung">
           <div class="ladder-week-label">Wk ${w.week}</div>
@@ -40,7 +53,7 @@
             <div class="ladder-segment pending" style="width:${pct(pending)}%"></div>
             <div class="ladder-segment eliminated" style="width:${pct(eliminated)}%"></div>
           </div>
-          <div class="ladder-count"><strong>${survived + pending}</strong> / ${total} alive</div>
+          <div class="ladder-count">${countLabel}</div>
         </div>`;
     }).join("");
     els.ladder.innerHTML = rows;
