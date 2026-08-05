@@ -75,7 +75,6 @@ window.Survivor = (function () {
       byWeek.get(week).push({
         name: r["name"] || "",
         qb: r["qb pick"],
-        team: r["team"] || "",
         result: normalizeResult(r["result"]),
       });
     });
@@ -92,11 +91,11 @@ window.Survivor = (function () {
   }
 
   function aggregatePicks(entries) {
-    const counts = new Map(); // key: qb|team -> { qb, team, count, results }
+    const counts = new Map(); // key: qb -> { qb, count, results }
     entries.forEach((e) => {
-      const key = e.qb + "|" + e.team;
+      const key = e.qb.toLowerCase();
       if (!counts.has(key)) {
-        counts.set(key, { qb: e.qb, team: e.team, count: 0, results: { Survived: 0, Eliminated: 0, Pending: 0 } });
+        counts.set(key, { qb: e.qb, count: 0, results: { Survived: 0, Eliminated: 0, Pending: 0 } });
       }
       const c = counts.get(key);
       c.count += 1;
@@ -119,12 +118,12 @@ window.Survivor = (function () {
   function usedQBsForName(weeksData, name) {
     const target = name.trim().toLowerCase();
     if (!target) return [];
-    const used = new Map(); // qb -> { qb, team, week }
+    const used = new Map(); // qb -> { qb, week }
     weeksData.forEach((w) => {
       w.entries.forEach((e) => {
         if ((e.name || "").trim().toLowerCase() === target) {
           const key = e.qb.toLowerCase();
-          if (!used.has(key)) used.set(key, { qb: e.qb, team: e.team, week: w.week });
+          if (!used.has(key)) used.set(key, { qb: e.qb, week: w.week });
         }
       });
     });
