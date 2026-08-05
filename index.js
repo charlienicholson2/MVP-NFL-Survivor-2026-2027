@@ -1,22 +1,13 @@
 (function () {
   const S = window.Survivor;
-  const cfg = S.cfg;
-
   const els = {
-    picksPanel: document.getElementById("picks-panel"),
-    lockCountdown: document.getElementById("lock-countdown"),
-    currentWeekStat: document.getElementById("current-week-stat"),
-    remainingStat: document.getElementById("remaining-stat"),
-    thresholdText: document.querySelectorAll("[data-threshold]"),
-    weekHeading: document.getElementById("this-week-heading"),
+    ladder: document.getElementById("ladder"),
+    weeksList: document.getElementById("weeks-list"),
   };
 
   init();
 
   async function init() {
-    renderThreshold();
-    renderCountdown();
-
     let weeksData = [];
     try {
       weeksData = await S.loadData();
@@ -25,80 +16,77 @@
     }
 
     if (!weeksData.length) {
-      els.picksPanel.innerHTML = '<p class="state-msg">No pick data yet. Connect a Google Sheet in config.js, or check back once Week 1 picks are in.</p>';
+      els.ladder.innerHTML = '<p class="state-msg">No history yet — check back once Week 1 is recorded.</p>';
+      els.weeksList.innerHTML = "";
       return;
     }
 
-    const latest = S.resolveCurrentWeek(weeksData);
-    renderTopStats(latest, weeksData);
-    renderPicksPanel(latest);
+    renderLadder(weeksData);
+    renderWeeksList(weeksData);
   }
 
-  function renderThreshold() {
-    const t = cfg.TD_THRESHOLD ?? 1.5;
-    els.thresholdText.forEach((el) => { el.textContent = t; });
-  }
+  function renderLadder(weeksData) {
+    const cfg = S.cfg;
+    let cumulativeEliminated = 0;
 
-  function renderCountdown() {
-    if (!cfg.NEXT_LOCK_ISO) {
-      els.lockCountdown.textContent = "TBD";
-      return;
-    }
-    const target = new Date(cfg.NEXT_LOCK_ISO).getTime();
-    const tick = () => {
-      const diff = target - Date.now();
-      if (diff <= 0) {
-        els.lockCountdown.textContent = "Locked";
-        return;
+    const rows = weeksData.map((w) => {
+      const total = w.entries.length || 1;
+      const survived = w.entries.filter((e) => e.result === "Survived").length;
+      const eliminated = w.entries.filter((e) => e.result === "Eliminated").length;
+      const pending = total - survived - eliminated;
+      const pct = (n) => (n / total) * 100;
+
+      let countLabel;
+      if (cfg.TOTAL_MVPS) {
+        cumulativeEliminated += eliminated;
+        const alive = cfg.TOTAL_MVPS - cumulativeEliminated;
+        countLabel = `<strong>${alive}</strong> / ${cfg.TOTAL_MVPS} alive`;
+      } else {
+        countLabel = `<strong>${survived + pending}</strong> / ${total} alive`;
       }
-      const d = Math.floor(diff / 86400000);
-      const h = Math.floor((diff % 86400000) / 3600000);
-      const m = Math.floor((diff % 3600000) / 60000);
-      els.lockCountdown.textContent = `${d}d ${h}h ${m}m`;
-    };
-    tick();
-    setInterval(tick, 60000);
-  }
 
-  function renderTopStats(latest, weeksData) {
-    els.currentWeekStat.textContent = "Week " + latest.week;
-
-    if (cfg.TOTAL_MVPS) {
-      const eliminated = S.cumulativeEliminated(weeksData);
-      const remaining = cfg.TOTAL_MVPS - eliminated;
-      els.remainingStat.textContent = remaining + " of " + cfg.TOTAL_MVPS;
-    } else {
-      const remaining = latest.entries.filter((e) => e.result !== "Eliminated").length;
-      els.remainingStat.textContent = remaining + " of " + latest.entries.length;
-    }
-
-    if (els.weekHeading) els.weekHeading.textContent = "Week " + latest.week + " pick breakdown";
-  }
-
-  function renderPicksPanel(weekObj) {
-    const agg = S.aggregatePicks(weekObj.entries);
-    const total = weekObj.entries.length;
-
-    const rows = agg.map((c) => {
-      const res = S.dominantResult(c);
-      const tagClass = res.toLowerCase();
       return `
-        <div class="pick-row">
-          <div class="pick-name">
-            ${S.escapeHTML(c.qb)}
-            <span class="result-tag ${tagClass}">${res}</span>
+        <div class="ladder-rung">
+          <div class="ladder-week-label">Wk ${w.week}</div>
+          <div class="ladder-track">
+            <div class="ladder-segment survived" style="width:${pct(survived)}%"></div>
+            <div class="ladder-segment pending" style="width:${pct(pending)}%"></div>
+            <div class="ladder-segment eliminated" style="width:${pct(eliminated)}%"></div>
           </div>
-          <div class="bar-track"><div class="bar-fill" style="width:${c.pct.toFixed(1)}%"></div></div>
-          <div class="pick-pct">${c.pct.toFixed(0)}%</div>
+          <div class="ladder-count">${countLabel}</div>
         </div>`;
     }).join("");
+    els.ladder.innerHTML = rows;
+  }
 
-    els.picksPanel.innerHTML = `
-      <div class="picks-meta">
-        <span class="total"><strong>${total}</strong> entries this week</span>
-      </div>
-      ${rows}
-      <div class="privacy-note">Aggregate view only — individual picks are never shown.</div>
-    `;
+  function renderWeeksList(weeksData) {
+    // Most recent week first, scroll down for earlier weeks.
+    const ordered = [...weeksData].reverse();
+    els.weeksList.innerHTML = ordered.map((w) => {
+      const agg = S.aggregatePicks(w.entries);
+      const total = w.entries.length;
+      const rows = agg.map((c) => {
+        const res = S.dominantResult(c);
+        const tagClass = res.toLowerCase();
+        return `
+          <div class="pick-row">
+            <div class="pick-name">
+              ${S.escapeHTML(c.qb)}
+              <span class="result-tag ${tagClass}">${res}</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" style="width:${c.pct.toFixed(1)}%"></div></div>
+            <div class="pick-pct">${c.pct.toFixed(0)}%</div>
+          </div>`;
+      }).join("");
+
+      return `
+        <article class="week-block" id="week-${w.week}">
+          <div class="picks-meta">
+            <h3>Week ${w.week}</h3>
+            <span class="total"><strong>${total}</strong> entries</span>
+          </div>
+          <div class="picks-panel">${rows}</div>
+        </article>`;
+    }).join("");
   }
 })();
