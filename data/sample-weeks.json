@@ -1,0 +1,80 @@
+[
+  {
+    "week": 1,
+    "entries": [
+      {
+        "qb": "Josh Allen",
+        "result": "Survived"
+      },
+      {
+        "qb": "Josh Allen",
+        "result": "Survived"
+      },
+      {
+        "qb": "Josh Allen",
+        "result": "Survived"
+      },
+      {
+        "qb": "Lamar Jackson",
+        "result": "Survived"
+      },
+      {
+        "qb": "Lamar Jackson",
+        "result": "Survived"
+      },
+      {
+        "qb": "Jalen Hurts",
+        "result": "Survived"
+      },
+      {
+        "qb": "Jalen Hurts",
+        "result": "Eliminated"
+      },
+      {
+        "qb": "Patrick Mahomes",
+        "result": "Survived"
+      },
+      {
+        "qb": "C.J. Stroud",
+        "result": "Eliminated"
+      },
+      {
+        "qb": "Dak Prescott",
+        "result": "Survived"
+      }
+    ]
+  },
+  {
+    "week": 2,
+    "entries": [
+      {
+        "qb": "Josh Allen",
+        "result": "Survived"
+      },
+      {
+        "qb": "Josh Allen",
+        "result": "Survived"
+      },
+      {
+        "qb": "Lamar Jackson",
+        "result": "Survived"
+      },
+      {
+        "qb": "Jalen Hurts",
+        "result": "Survived"
+      },
+      {
+        "qb": "Patrick Mahomes",
+        "result": "Eliminated"
+      },
+      {
+        "qb": "Dak Prescott",
+        "result": "Survived"
+      },
+      {
+        "qb": "Jayden Daniels",
+        "result": "Survived"
+      }
+    ]
+  }
+]
