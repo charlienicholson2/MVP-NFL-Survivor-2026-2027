@@ -356,15 +356,6 @@ nav.site-nav a:focus-visible,
   gap: 8px;
 }
 
-.pick-name .team-tag {
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: var(--stankonia-400);
-  border: 1px solid var(--stankonia-700);
-  padding: 1px 6px;
-  border-radius: 4px;
-}
-
 .bar-track {
   height: 10px;
   background: var(--so-fresh);
