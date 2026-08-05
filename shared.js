@@ -130,6 +130,13 @@ window.Survivor = (function () {
     return Array.from(used.values()).sort((a, b) => a.week - b.week);
   }
 
+  // Total eliminations recorded across every week so far — used to derive
+  // "MVPs still alive" from a configured season roster size without ever
+  // needing to know who any of them are.
+  function cumulativeEliminated(weeksData) {
+    return weeksData.reduce((sum, w) => sum + w.entries.filter((e) => e.result === "Eliminated").length, 0);
+  }
+
   function escapeHTML(str) {
     return String(str)
       .replace(/&/g, "&amp;")
@@ -138,5 +145,5 @@ window.Survivor = (function () {
       .replace(/"/g, "&quot;");
   }
 
-  return { cfg, loadData, parseCSV, rowsToWeeks, normalizeResult, aggregatePicks, dominantResult, usedQBsForName, escapeHTML };
+  return { cfg, loadData, parseCSV, rowsToWeeks, normalizeResult, aggregatePicks, dominantResult, usedQBsForName, cumulativeEliminated, escapeHTML };
 })();
