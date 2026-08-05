@@ -3,12 +3,16 @@
  * ---------------------------------------------------------
  * 1. In Google Sheets: File > Share > Publish to web
  *    - Select the specific sheet/tab that holds your pick data
- *    - Choose "Comma-separated values (.csv)"
- *    - Click Publish, then copy the URL it gives you
- * 2. Paste that URL below as SHEET_CSV_URL.
- * https://docs.google.com/spreadsheets/d/e/2PACX-1vRxe4Ssdq_lp_0QZruZOvphHNcnlbnGFqQ7jqvWWO-L7HQcgPKbi2gZwQmnwiA4NJrg85gcZPZp406x/pubhtml?gid=648629051&single=true
+ *    - Choose "Comma-separated values (.csv)" from the format dropdown
+ *      (it defaults to "Web page" — make sure you change it)
+ *    - Click Publish, then copy the URL it gives you (it should end
+ *      in "output=csv", NOT "single=true")
+ * 2. Paste that URL into the SHEET_CSV_URL field FURTHER DOWN in this
+ *    file, between the quotes. Do NOT paste it up here in this comment —
+ *    this block is just instructions, it isn't read by the code.
+ *
  * Expected columns in your sheet (exact header names, any order):
- *   Week        -> e.g. 1, 2, 3...
+ *   Week         -> e.g. 1, 2, 3...
  *   Name         -> MVP's name (used only to enforce no-repeat picks, never displayed)
  *   QB Pick      -> e.g. "Josh Allen"
  *   Result       -> "Survived" / "Eliminated" / "Pending" (optional)
@@ -17,13 +21,21 @@
  * data in data/sample-weeks.json so you can preview the layout.
  */
 window.SURVIVOR_CONFIG = {
-  SHEET_CSV_URL: "",
+  SHEET_CSV_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRxe4Ssdq_lp_0QZruZOvphHNcnlbnGFqQ7jqvWWO-L7HQcgPKbi2gZwQmnwiA4NJrg85gcZPZp406x/pub?gid=648629051&single=true&output=csv",
 
   // The combined TD threshold QBs need to hit to survive (passing + rushing + receiving)
   TD_THRESHOLD: 1.5,
 
   // Season framing shown in the hero
   SEASON_LABEL: "2026 Season",
+
+  // Manual control over which week the home page shows as "current."
+  // Set this to a number (e.g. 1) to lock the home page to that week
+  // regardless of what's in the sheet — entering results or even adding
+  // next week's picks to the sheet won't change what's displayed until
+  // you update this number yourself. Leave null to auto-show whichever
+  // week has the highest number in your data instead.
+  CURRENT_WEEK: null,
 
   // Total number of MVPs competing this season. The "Still Alive" stat is this
   // number minus everyone eliminated so far — set it once at kickoff. If left
