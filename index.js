@@ -30,7 +30,7 @@
     }
 
     const latest = weeksData[weeksData.length - 1];
-    renderTopStats(latest);
+    renderTopStats(latest, weeksData);
     renderPicksPanel(latest);
   }
 
@@ -60,10 +60,18 @@
     setInterval(tick, 60000);
   }
 
-  function renderTopStats(latest) {
+  function renderTopStats(latest, weeksData) {
     els.currentWeekStat.textContent = "Week " + latest.week;
-    const remaining = latest.entries.filter((e) => e.result !== "Eliminated").length;
-    els.remainingStat.textContent = remaining + " of " + latest.entries.length;
+
+    if (cfg.TOTAL_MVPS) {
+      const eliminated = S.cumulativeEliminated(weeksData);
+      const remaining = cfg.TOTAL_MVPS - eliminated;
+      els.remainingStat.textContent = remaining + " of " + cfg.TOTAL_MVPS;
+    } else {
+      const remaining = latest.entries.filter((e) => e.result !== "Eliminated").length;
+      els.remainingStat.textContent = remaining + " of " + latest.entries.length;
+    }
+
     if (els.weekHeading) els.weekHeading.textContent = "Week " + latest.week + " pick breakdown";
   }
 
