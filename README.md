@@ -126,12 +126,13 @@ That's your live site. Share that link with your MVPs.
 
 ## Customizing
 
-- **TD threshold, season label, lock countdown** — edit the top of `config.js`
+- **TD threshold, season label, lock countdown, total MVP roster size** — edit the top of `config.js`
 - **Colors, type, layout** — `styles.css` uses PrizePicks brand tokens as CSS variables at the top of the file
 - **Copy/rules text** — edit directly in `index.html` / `history.html`
 
 ## Notes
 
-- If `SHEET_CSV_URL` is blank, both pages show the sample data in `data/sample-weeks.json` so you can preview the design before connecting real data.
+- If `SHEET_CSV_URL` is blank, both pages show the sample data in `data/sample-weeks.json` so you can preview the design before connecting real data. If your live site is showing QBs/results you don't recognize, this is almost always why — double check `SHEET_CSV_URL` in `config.js` actually has your Published tab's CSV link pasted in.
+- Set `TOTAL_MVPS` in `config.js` once at kickoff (e.g. the number of people who filled out your intake form). The "Still Alive" stat is then this number minus everyone eliminated so far, counted cumulatively across every week — no need to track who's who, since eliminated MVPs simply stop showing up in future weeks' rows. If `TOTAL_MVPS` is left blank, the site falls back to counting just the current week's entries instead.
 - The site never renders individual names or picks — only aggregate percentages and counts, by design. The no-repeat rule is enforced on your admin sheet (via the Duplicate? flag), not by anything public-facing.
 - Want automated grading later instead of the Results tab? That's possible with a scheduled GitHub Action pulling from a stats API (e.g. Sportradar) and writing back to the sheet — more setup and an ongoing API cost/dependency, but zero weekly manual work. Worth it once manual grading becomes a real bottleneck; probably not before then.
