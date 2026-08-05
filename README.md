@@ -22,16 +22,16 @@ You'll use three tabs: **Picks** (raw Typeform responses, internal only), **Resu
 
 ### Picks tab
 
-| Week | Name | QB Pick | Team | Result |
-|------|------|---------|------|--------|
-| 1 | Jordan T. | Josh Allen | BUF | *(formula)* |
-| 1 | Casey R. | Lamar Jackson | BAL | *(formula)* |
+| Week | Name | QB Pick | Result | Duplicate? |
+|------|------|---------|--------|------------|
+| 1 | Jordan T. | Josh Allen | *(formula)* | *(formula)* |
+| 1 | Casey R. | Lamar Jackson | *(formula)* | *(formula)* |
 
 - **Week** — the numeric week (1, 2, 3…)
 - **Name** — MVP's name, pulled from your Typeform responses. Used only to enforce the no-repeat rule (see below) — the site itself never displays names.
-- **QB Pick** — the quarterback they picked
-- **Team** — optional, shown as a small tag next to the QB
+- **QB Pick** — the quarterback they picked. No Team column — the challenge is QB-only, so it's not needed anywhere in the sheet or site.
 - **Result** — a formula that pulls from the Results tab (see below), so you never type this by hand per-person
+- **Duplicate?** — a formula flagging repeat picks (see below)
 
 Each week, copy that week's Typeform responses in as new rows (don't overwrite past weeks — the site uses history to build the survivor ladder).
 
@@ -47,7 +47,7 @@ After each week's games, you fill in **one row per distinct QB that was picked**
 
 ### Auto-fill Result on the Picks tab
 
-In the Picks tab's **Result** column (say column E, with Week in A and QB Pick in C):
+In the Picks tab's **Result** column (column D, with Week in A and QB Pick in C):
 
 ```
 =IFERROR(INDEX(Results!$C:$C, MATCH(A2&"|"&C2, Results!$D:$D, 0)), "Pending")
@@ -57,7 +57,7 @@ This looks up that row's Week + QB combo against your Results tab and pulls the 
 
 ### Enforcing "no repeat QB"
 
-Add one more helper column on the Picks tab (say column F, "Duplicate?") to flag it for you when entering data:
+Add one more helper column on the Picks tab (column E, "Duplicate?") to flag it for you when entering data:
 
 ```
 =IF(COUNTIFS($B$2:B2,B2,$C$2:C2,C2)>1,"⚠ Repeat pick","")
@@ -69,13 +69,13 @@ This flags any row where that Name + QB Pick combo has already appeared earlier 
 
 You'll want **Picks** and **Results** shared only with your internal team (Google's normal "Share" — restricted to specific people, not published). That's the tab with names on it, and it should never be published.
 
-Add a third tab, **Published**, that mirrors Picks but drops the Name and Duplicate? columns entirely — this is the *only* tab you publish to web, and it's the only one the site ever reads. Give it a header row (`Week | QB Pick | Team | Result`), then in the first data cell:
+Add a third tab, **Published**, that mirrors Picks but drops the Name and Duplicate? columns entirely — this is the *only* tab you publish to web, and it's the only one the site ever reads. Give it a header row (`Week | QB Pick | Result`), then in the first data cell:
 
 ```
-=QUERY(Picks!A2:E, "select A, C, D, E", 0)
+=QUERY(Picks!A2:E, "select A, C, D", 0)
 ```
 
-This pulls Week, QB Pick, Team, and Result from Picks — with Name left out entirely — and stays live as you add rows to Picks. Since it never contains a name or any other personal info, the fact that its link is technically public (anyone with the link, no login) doesn't expose anything about your members — it's just pick counts and results, which the site was always going to show anyway.
+This pulls Week, QB Pick, and Result from Picks — with Name left out entirely — and stays live as you add rows to Picks. Since it never contains a name or any other personal info, the fact that its link is technically public (anyone with the link, no login) doesn't expose anything about your members — it's just pick counts and results, which the site was always going to show anyway.
 
 **Bottom line:** restrict sharing on Picks/Results to your internal team like you'd want to anyway; publish only the derived, name-free Published tab.
 
