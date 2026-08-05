@@ -6,7 +6,7 @@
  *    - Choose "Comma-separated values (.csv)"
  *    - Click Publish, then copy the URL it gives you
  * 2. Paste that URL below as SHEET_CSV_URL.
- *
+ * https://docs.google.com/spreadsheets/d/e/2PACX-1vRxe4Ssdq_lp_0QZruZOvphHNcnlbnGFqQ7jqvWWO-L7HQcgPKbi2gZwQmnwiA4NJrg85gcZPZp406x/pubhtml?gid=648629051&single=true
  * Expected columns in your sheet (exact header names, any order):
  *   Week        -> e.g. 1, 2, 3...
  *   Name         -> MVP's name (used only to enforce no-repeat picks, never displayed)
