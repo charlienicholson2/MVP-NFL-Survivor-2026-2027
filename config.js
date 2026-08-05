@@ -9,9 +9,8 @@
  *
  * Expected columns in your sheet (exact header names, any order):
  *   Week        -> e.g. 1, 2, 3...
- *   Name         -> MVP's name (used only to count entries, never displayed)
+ *   Name         -> MVP's name (used only to enforce no-repeat picks, never displayed)
  *   QB Pick      -> e.g. "Josh Allen"
- *   Team         -> e.g. "BUF" (optional, shown next to the QB name)
  *   Result       -> "Survived" / "Eliminated" / "Pending" (optional)
  *
  * If SHEET_CSV_URL is left blank, the site falls back to the sample
