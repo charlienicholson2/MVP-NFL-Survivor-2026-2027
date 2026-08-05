@@ -35,14 +35,14 @@ window.SURVIVOR_CONFIG = {
   // next week's picks to the sheet won't change what's displayed until
   // you update this number yourself. Leave null to auto-show whichever
   // week has the highest number in your data instead.
-  CURRENT_WEEK: 1,
+  CURRENT_WEEK: "1",
 
   // Total number of MVPs competing this season. The "Still Alive" stat is this
   // number minus everyone eliminated so far — set it once at kickoff. If left
   // blank, the site falls back to counting just this week's entries instead.
-  TOTAL_MVPS: 297,
+  TOTAL_MVPS: "297",
 
   // Optional: ISO datetime string for when this week's picks lock (kickoff).
   // Leave blank to hide the countdown.
-  NEXT_LOCK_ISO: "",
+  NEXT_LOCK_ISO: "12PM EST 9/12/2026",
 };
