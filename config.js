@@ -44,5 +44,5 @@ window.SURVIVOR_CONFIG = {
 
   // Optional: ISO datetime string for when this week's picks lock (kickoff).
   // Leave blank to hide the countdown.
-  NEXT_LOCK_ISO: "2026-09-17T12:00:00-04:00",
+  NEXT_LOCK_ISO: "2026-09-24T12:00:00-04:00",
 };
