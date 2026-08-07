@@ -160,3 +160,7 @@ window.Survivor = (function () {
 
   return { cfg, loadData, parseCSV, rowsToWeeks, normalizeResult, aggregatePicks, dominantResult, usedQBsForName, cumulativeEliminated, resolveCurrentWeek, escapeHTML };
 })();
+// Point every "Make Your Pick" nav button to this week's Typeform link
+document.querySelectorAll('[data-pick-link]').forEach(function (el) {
+  el.href = SURVIVOR_CONFIG.TYPEFORM_URL;
+});
