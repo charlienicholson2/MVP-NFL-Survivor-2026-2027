@@ -532,6 +532,7 @@ footer {
   padding: 8px 16px;
   border-radius: 999px;
   font-weight: 600;
+  white-space: nowrap;
   transition: background 0.15s ease;
 }
 
