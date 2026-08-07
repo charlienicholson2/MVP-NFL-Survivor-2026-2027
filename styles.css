@@ -525,3 +525,15 @@ footer {
   .bar-fill { transition: none; }
   html { scroll-behavior: auto; }
 }
+.site-nav .nav-cta {
+  background: var(--stankonia-700);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-weight: 600;
+  transition: background 0.15s ease;
+}
+
+.site-nav .nav-cta:hover {
+  background: var(--stankonia-800);
+}
