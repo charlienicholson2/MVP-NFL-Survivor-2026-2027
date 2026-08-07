@@ -67,7 +67,10 @@ a { color: inherit; }
   align-items: center;
   gap: 12px;
 }
-
+.brand-link {
+  text-decoration: none;
+  display: block;
+}
 .brand img {
   height: 34px;
   width: auto;
