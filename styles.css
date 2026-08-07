@@ -90,7 +90,7 @@ a { color: inherit; }
   text-transform: uppercase;
 }
 
-navnav.site-nav {
+nav.site-nav {
   display: flex;
   gap: 28px;
   align-items: center;
