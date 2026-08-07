@@ -90,9 +90,10 @@ a { color: inherit; }
   text-transform: uppercase;
 }
 
-nav.site-nav {
+navnav.site-nav {
   display: flex;
   gap: 28px;
+  align-items: center;
 }
 
 nav.site-nav a {
